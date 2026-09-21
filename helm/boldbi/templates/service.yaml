@@ -38,6 +38,8 @@ spec:
     port: 6009
     {{- else if eq $service.app "bold-ai" }}
     port: 6010
+    {{- else if eq $service.app "bold-mcp" }}
+    port: 6011
     {{- end }}
     {{- if eq $service.app "bold-ai" }}
     targetPort: 8080
