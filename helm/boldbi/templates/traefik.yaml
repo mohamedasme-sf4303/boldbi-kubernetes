@@ -288,6 +288,17 @@ spec:
 
     - match: |
         {{- if $isIP }}
+        PathPrefix(`{{ printf "%s/mcp" $subPath }}`)
+        {{- else }}
+        Host(`{{ $host }}`) && PathPrefix(`{{ printf "%s/mcp" $subPath }}`)
+        {{- end }}
+      kind: Rule
+      services:
+        - name: bold-mcp-service
+          port: 6011
+
+    - match: |
+        {{- if $isIP }}
         PathRegexp(`^{{ $subPath }}/etlservice(/|$)(.*)`)
         {{- else }}
         Host(`{{ $host }}`) && PathRegexp(`^{{ $subPath }}/etlservice(/|$)(.*)`)
@@ -546,6 +557,17 @@ spec:
               name: bold.k8s.pod.id
               maxAge: {{ default "600" .Values.loadBalancer.affinityCookie.affinityCookieExpiration }}
           {{- end }}
+
+    - match: |
+        {{- if $isIP }}
+        PathPrefix(`{{ printf "%s/mcp" $subPath }}`)
+        {{- else }}
+        Host(`{{ $baseHost }}`) && PathPrefix(`{{ printf "%s/mcp" $subPath }}`)
+        {{- end }}
+      kind: Rule
+      services:
+        - name: bold-mcp-service
+          port: 6011
 
     - match: |
         {{- if $isIP }}
